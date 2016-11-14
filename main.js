@@ -25,7 +25,7 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 app.use(express.static('public'));
 require('./app/routes.js')(app, stormpath, settings); // load our routes and pass in our app and fully configured passport
 
-app.listen(3000);
+app.listen(5692);
 
 // Stormpath will let you know when it's ready to start authenticating users.
 app.on('stormpath.ready', function () {
