@@ -1,0 +1,35 @@
+<div id=<%= device %> >
+  <h4> ID: <%= device %> </h4>
+</div>
+<script>
+function onConnect()
+{
+  Router.SendMessage({
+    id:'<%= device %>',
+    from:userId,
+    message:{
+      cmd:"GETINFO"
+    }
+  });
+}
+
+function messageHandler(msg)
+{
+  var payload = msg.message;
+  switch (payload.cmd) {
+    case 'INFO':
+      renderDisplay(payload);
+      break;
+    default:
+
+  }
+}
+
+function void renderDisplay(message)
+{
+  $("#<%= device %>").find("h4").html(message.name);
+}
+
+Router.AddOnConnectHandler(onConnect);
+Router.AddHandler(userId, messageHandler);
+</script>

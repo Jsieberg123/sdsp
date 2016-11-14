@@ -1,0 +1,17 @@
+{
+  "name": "nodetestdevice",
+  "version": "0.0.1",
+  "description": "My test device project.",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Jacob Sieberg",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "node-wget": "^0.4.2",
+    "ws": "^1.1.1"
+  }
+}

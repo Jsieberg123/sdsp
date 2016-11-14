@@ -1,0 +1,1 @@
+exports.deviceFile = "settings.json";
