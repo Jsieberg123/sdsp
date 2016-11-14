@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="scripts/deviceDiscovery.js"></script>
     <script src="scripts/ejs.js"></script>
-    <script>var devices = [<%for(var i=0;i<user.devices.length;i++){ %> "<%= user.devices[i] %>", <% } %>]</script>
+    <script>var devices = [];//[<%for(var i=0;i<user.devices.length;i++){ %> "<%= user.devices[i] %>", <% } %>]</script>
 </head>
 <body>
   <nav class="navbar navbar-default">
@@ -33,9 +33,9 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.name %> <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.fullName %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="/logout">Logout</a></li>
+              <li><form action="/logout" method="post"><button class="btn btn-default logout" type="submit">Logout</button></form></li>
             </ul>
           </li>
         </ul>
