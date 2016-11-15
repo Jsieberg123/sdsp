@@ -1,5 +1,6 @@
 var express = require('express');
 var stormpath = require('express-stormpath');
+var sockets = require("./app/sockets.js")
 
 var app = express();
 

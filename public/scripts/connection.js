@@ -1,67 +1,29 @@
-var socket = new WebSocket(getUri());
-var connected = false;
-
-socket.onopen = function(){
-  connected = true;
-  console.log("connected");
-  for(var i=0;i<Router.onConnectHandlers.length;i++)
-  {
-    Router.onConnectHandlers[i]();
-  }
-};
-
-socket.onerror = function(error){
-  console.log("Err", error);
-};
-
-socket.onmessage = function(msg)
+function ConnectToTopic(topic, messageHandler, onConnect)
 {
-  msg = JSON.parse(msg.data);
-  console.log("Recieved ",msg);
-  if(typeof(msg.from) != 'string')
+  var socket = new WebSocket(getUri());
+  socket.onopen = function()
   {
-    console.log("Invalid Message");
+    socket.send(topic);
+    onConnect({
+      send: function(msg){
+        socket.send(JSON.stringify({topic:topic, payload:msg}));
+      },
+      topic:topic,
+      socket:socket
+    });
   }
-  else{
-    for(var i=0;i<Router.handlers[msg.from].length;i++)
-    {
-      Router.handlers[msg.from][i](msg);
-    }
-  }
+
+  socket.onmessage = function (event){
+    messageHandler(event.data);
+  };
 }
 
-var Router = {
-  AddHandler:addHandler,
-  handlers:{},
-  AddOnConnectHandler:addOnConnectHandler,
-  onConnectHandlers:[],
-  SendMessage:sendMessage
-}
-
-function sendMessage(msg)
+function onMessage(message)
 {
-  console.log("Sending ", msg)
-  socket.send(JSON.stringify(msg));
+  console.log(message);
 }
 
-function addOnConnectHandler(handler)
-{
-  if(connected)
-  {
-    handler();
-    return;
-  }
-  Router.onConnectHandlers.push(handler);
-}
-
-function addHandler(id, handler)
-{
-  if(typeof(Router.handlers[id]) != 'undefinded')
-  {
-    Router.handlers[id] = [];
-  }
-  Router.handlers[id].push(handler);
-}
+ConnectToTopic("test", onMessage, function(connection){connection.send("Hello World")})
 
 function getUri(){
   var loc = window.location, new_uri;
@@ -71,7 +33,6 @@ function getUri(){
   else {
     new_uri = "ws:";
   }
-  new_uri += "//"+ loc.host;
-  new_uri += loc.pathname + "sockets/user";
+  new_uri += "//"+ loc.host.slice(0, -4) + "5693";
   return new_uri;
 }
