@@ -33,6 +33,6 @@ function getUri(){
   else {
     new_uri = "ws:";
   }
-  new_uri += "//"+ loc.host.slice + "/sockets";
+  new_uri += "//"+ loc.host + "/sockets";
   return new_uri;
 }
