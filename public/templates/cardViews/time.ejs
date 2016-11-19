@@ -5,11 +5,10 @@ Time
 function OnConnect<%= id %>(connection)
 {
   console.log("connected");
-  connection.Send({action:"Get-Time"});
+  setInterval(function(){connection.Send({action:"Get-Time"});}, 1000);
 }
 function OnMessage<%= id %>(message, connection)
 {
-  console.log(message);
   if(message.response=="Get-Time"){
     $("#<%= id%>").html(message.data);
   }
