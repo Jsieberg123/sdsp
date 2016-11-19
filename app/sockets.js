@@ -2,46 +2,53 @@ var WebSocketServer = require('ws').Server
   , wss = new WebSocketServer({ port: 5693 });
 
 var router = {};
-
+var id = 0;
 wss.on('connection', function connection(ws) {
-  ws.onMessage = function (message){onNewSocketMessage(message,ws);};
-  ws.on('message', function incoming(message) {
-    ws.onMessage(message);
+  var url = ws.upgradeReq.url;
+  var params = GetParams(url);
+  var topic = params.topic;
+  id++;
+
+  ws.on('message', function(message) {
+    Send(JSON.parse(message));
   });
+
+  ws.on("close", function(){
+    console.log("disconnected");
+    delete router[topic][id];
+    if(Object.keys(router[topic]).length == 0)
+    {
+      delete router[topic];
+    }
+  });
+
+  if(!(topic in router))
+  {
+    router[topic] = {};
+  }
+  router[topic][id] = ws;
 });
 
-function onNewSocketMessage(message, ws)
+function Send(message)
 {
-  if(!(message in router))
-  {
-    console.log(message + " added to router topics");
-    router[message] = [];
-  }
-
-  router[message].push(ws);
-  ws.onMessage = onMessage;
-}
-
-function onMessage(message)
-{
-  console.log("new message");
-  message = JSON.parse(message);
-  console.log(message);
   if(message.topic in router)
   {
-    var clients = router[message.topic];
-    console.log(clients);
-    var removeClients = [];
-    for(var i=0;i<clients.length;i++)
+    var stringMessage = JSON.stringify(message.payload);
+    for(key in router[message.topic])
     {
-      if(clients[i] != null)
-      {
-        console.log("sending message " + message.payload)
-        clients[i].send(message.payload, function ack(error) {
-          console.log(error);
-            clients[i] = null;
-          });
-      }
-    }
+      router[message.topic][key].send(stringMessage);
+    }  
   }
+}
+
+function GetParams(uri)
+{
+  var index = uri.indexOf("?")+1;
+  var query = uri.substr(index);
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
 }
