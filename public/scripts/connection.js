@@ -20,9 +20,9 @@ function ConnectToTopic(topic, messageHandler, onConnect)
 
 function getUri(){
   var loc = window.location, new_uri;
-  //new_uri = "wss:";
-  //new_uri += "//"+ loc.host + "/sockets";
-  new_uri = "ws://127.0.0.1:5693";
+  new_uri = "wss:";
+  new_uri += "//"+ loc.host + "/sockets";
+  //new_uri = "ws://127.0.0.1:5693";
   return new_uri;
 }
 var __id;
