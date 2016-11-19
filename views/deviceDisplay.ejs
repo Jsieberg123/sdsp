@@ -20,7 +20,6 @@ function OnMessage<%= device %>(message, connection)
       var html = new EJS({url: '/templates/cardViews/'+card.type+'.ejs'}).render({card:card,id:makeId(),topic:connection.topic})
       $("#<%= device%>").find("ul").html(html);
     }
-    //connection.Send({action:"Get-Time"});
   }
 }
 
