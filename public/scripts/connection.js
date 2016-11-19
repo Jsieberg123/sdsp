@@ -25,7 +25,7 @@ function getUri(){
   //new_uri = "ws://127.0.0.1:5693";
   return new_uri;
 }
-var __id;
+var __id = 0;
 function makeId()
 {
     return __id++;
