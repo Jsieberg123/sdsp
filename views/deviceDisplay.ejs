@@ -2,34 +2,24 @@
   <h4> ID: <%= device %> </h4>
 </div>
 <script>
-function onConnect()
+function OnConnect<%= device %>(connection)
 {
-  Router.SendMessage({
-    id:'<%= device %>',
-    from:userId,
-    message:{
-      cmd:"GETINFO"
-    }
-  });
+  console.log("connected");
+  connection.Send({action:"Get-Cards"});
 }
-
-function messageHandler(msg)
+function OnMessage<%= device %>(message, connection)
 {
-  var payload = msg.message;
-  switch (payload.cmd) {
-    case 'INFO':
-      renderDisplay(payload);
-      break;
-    default:
-
+  console.log(message);
+  if(message.response=="Get-Time"){
+    $("#<%= device%>").append(message.data);
+  }
+  if(message.response=="Get-Cards")
+  {
+    $("#<%= device%>").find("h4").html(message.data.name)
+    connection.Send({action:"Get-Time"});
   }
 }
 
-function void renderDisplay(message)
-{
-  $("#<%= device %>").find("h4").html(message.name);
-}
+ConnectToTopic("<%=device%>", OnMessage<%=device%>, OnConnect<%=device%>);
 
-Router.AddOnConnectHandler(onConnect);
-Router.AddHandler(userId, messageHandler);
 </script>

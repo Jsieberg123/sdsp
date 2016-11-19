@@ -41,6 +41,8 @@
     </div><!-- /.container-fluid -->
   </nav>
   <ul>
-    <%= JSON.stringify(user) %>
+    <% user.customData.devices.forEach(function(device){ %>
+      <% include ../views/deviceDisplay %>
+    <% }) %>
 </body>
 </html>
