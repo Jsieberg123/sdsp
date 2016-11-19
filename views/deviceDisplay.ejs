@@ -1,5 +1,6 @@
 <div id=<%= device %> >
   <h4> ID: <%= device %> </h4>
+  <ul class="list-group"></ul>
 </div>
 <script>
 function OnConnect<%= device %>(connection)
@@ -10,13 +11,16 @@ function OnConnect<%= device %>(connection)
 function OnMessage<%= device %>(message, connection)
 {
   console.log(message);
-  if(message.response=="Get-Time"){
-    $("#<%= device%>").append(message.data);
-  }
   if(message.response=="Get-Cards")
   {
     $("#<%= device%>").find("h4").html(message.data.name)
-    connection.Send({action:"Get-Time"});
+    for(var i=0;i<message.data.cards.length;i++)
+    {
+      var card = message.data.cards[i];
+      var html = new EJS({url: '/templates/cardViews/'+card.type+'.ejs'}).render({card:card,id:makeId(),topic:connection.topic})
+      $("#<%= device%>").find("ul").html(html);
+    }
+    //connection.Send({action:"Get-Time"});
   }
 }
 
