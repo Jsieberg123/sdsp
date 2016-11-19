@@ -4,6 +4,7 @@ var WebSocketServer = require('ws').Server
 var router = {};
 var id = 0;
 wss.on('connection', function connection(ws) {
+  console.log("connected")
   var url = ws.upgradeReq.url;
   var params = GetParams(url);
   var topic = params.topic;
@@ -36,7 +37,15 @@ function Send(message)
     var stringMessage = JSON.stringify(message.payload);
     for(key in router[message.topic])
     {
-      router[message.topic][key].send(stringMessage);
+      try
+      {
+        router[message.topic][key].send(stringMessage);
+      }
+      catch(e)
+      {
+        delete router[message.topic][key];        
+        console.log(e);
+      }
     }  
   }
 }
