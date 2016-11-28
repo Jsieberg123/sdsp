@@ -28,8 +28,7 @@ function OnMessage<%= device %>(message, connection)
     $("#<%= device%>").find("h4").html(message.data.name)
     for(var i=0;i<message.data.cards.length;i++)
     {
-      var card = message.data.cards[i];
-      var html = new EJS({url: '/templates/cardViews/'+card.type+'.ejs'}).render({card:card,id:makeId(),topic:connection.topic})
+      var html = message.data.cards[i];
       $("#<%= device%>").find("ul").html(html);
     }
   }
