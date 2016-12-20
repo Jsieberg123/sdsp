@@ -1,0 +1,11 @@
+<script>
+    var ws = new WebSocket("ws://localhost:5693?topic=display-3fuksLdGMWc9VEX");
+
+    ws.onopen = function() {
+        ws.send("Get");
+    }
+
+    ws.onmessage = function(event) {
+        console.log(event.data);
+    }
+</script>

@@ -1,49 +1,90 @@
-<!doctype html>
-<html>
-<head>
-    <title><%= projectName %></title>
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="css/page.css" rel="stylesheet">
-    <link href="css/spinner.css" rel="stylesheet">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="scripts/connection.js"></script>
-        <script src="scripts/ejs.js"></script>
-</head>
-<body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/"><%= projectName %></a>
-      </div>
+    <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="/css/page.css" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Control<span class="sr-only">(current)</span></a></li>
-          <li><a href="/devices">Devices</a></li>
+      <!--Let browser know website is optimized for mobile-->
+      <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+      <meta name="HandheldFriendly" content="true" />
+    </head>
+    <body class="teal lighten-1">
+        <!-- Dropdown Structure -->
+        <ul id="user" class="dropdown-content">
+            <li><a href="/logout">Logout</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.fullName %> <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><form action="/logout" method="post"><button class="btn btn-default logout" type="submit">Logout</button></form></li>
-            </ul>
-          </li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-  <ul>
-    <% user.customData.devices.forEach(function(device){ %>
-      <% include ../views/deviceDisplay %>
-    <% }) %>
-</body>
-</html>
+        <div class="navbar-fixed">
+            <nav class="teal darken-2">
+                <div class="nav-wrapper">
+                    <a href="/" class="brand-logo center lime-text text-darken-1">Agg-Automation</a>
+                    <a class="dropdown-button right lime-text text-darken-1 hide-on-small-only" data-beloworigin="true" href="#!" data-activates="user"><%= user.fullName%><i class="material-icons right">arrow_drop_down</i></a>
+                    <a class="dropdown-button right lime-text text-darken-1 hide-on-med-and-up" data-beloworigin="true" href="#!" data-activates="user"><i class="material-icons right">menu</i></a>
+                </div>
+            </nav>
+        </div>
+        <% for(var i=0;i<devices.length;i++){ %>
+            <div class="row">
+                <div class="col s12 m10 offset-m1">
+                    <div class="card min-hieght">
+                        <div class="card-content">
+                            <div class="card-title">
+                                <%= devices[i].description %>
+                                <i class="pointer material-icons activator right">more_vert</i>
+                            </div>
+                            <div id="<%= devices[i].id%>">          
+                                <div id="<%= devices[i].id%>-spinner" class="center row">
+                                    <div class="progress col s12 m10 offset-m1">
+                                        <div class="indeterminate"></div>
+                                    </div>
+                                </div>
+                                <div id="<%= devices[i].id%>-retry" class="center" hidden>
+                                    <div>
+                                        Failed to connect.
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title">Options<i class="material-icons right">close</i></span>
+                            <div class="row">
+                            <form method="post" action="/update" class="col s12 m6 update<%= devices[i].id%>">
+                                <input type="hidden" value="<%= devices[i].id%>" name="id">
+                                    <div class="input-field">
+                                        <input id="description" type="text" class="validate" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                            </form>
+                            <form method="post" action="/delete" class="col s12 delete<%= devices[i].id%>">
+                                <input type="hidden" value="<%= devices[i].id%>" name="id">
+                            </form>
+                            </div>
+                            <button id="update<%= devices[i].id%>" class="btn waves-effect waves-light click" type="submit">Save
+                                    <i class="material-icons right">send</i>
+                            </button>
+                            <button id="delete<%= devices[i].id%>" class="btn waves-effect waves-light click" type="submit">Delete
+                                    <i class="material-icons right">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        <% } %>
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+      <script src="/scripts/ejs.min.js"></script>
+      <script>
+        $(".click").click(function() {
+            console.log("here");
+            var id = $(this).attr("id");
+            $("." + id).submit();
+            });
+
+            var devices = <%- JSON.stringify(devices)%>;
+      </script>
+      <script src="/scripts/devices.js"></script>
+    </body>
+  </html>

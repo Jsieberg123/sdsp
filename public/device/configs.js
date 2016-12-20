@@ -1,1 +1,0 @@
-exports.deviceFile = "settings.json";

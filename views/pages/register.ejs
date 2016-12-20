@@ -1,0 +1,48 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="/css/page.css" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body class="teal lighten-1">
+      <div class="row margin-top">
+        <form class="col l4 s12 card-panel offset-l4" method="post">
+          <h3 class="center-align">Register</h3>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="email" type="email" name="email" class="validate">
+              <label for="email" data-error="Can't you fiqure out how to type an email?" data-success="">Email</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="givenName" type="text" name="givenName" class="validate">
+              <label for="givenName">First Name</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="surname" type="text" name="surname" class="validate">
+              <label for="surname">Last Name</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="password" type="password" name="password" pattern="^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$" class="validate">
+              <label for="password" data-error="Type a good password." data-success="">Password</label>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+        <div class="col l4 s12 offset-l4">
+            <a class="left lime-text text-darken-1" href="/forgot">Forgot Password</a>
+            <a class="right lime-text text-darken-1" href="/login">Login</a>
+        </div>
+      </div>
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    </body>
+  </html>

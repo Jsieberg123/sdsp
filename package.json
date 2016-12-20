@@ -1,16 +1,29 @@
 {
-  "name": "nodetest",
+  "name": "sd-web",
   "version": "0.0.1",
-  "description": "My test project.",
+  "description": "Senior design web site",
   "main": "main.js",
   "scripts": {
-    "test": "test"
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/jsieberg123/sd-web.git"
   },
   "author": "Jacob Sieberg",
   "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/jsieberg123/sd-web/issues"
+  },
+  "homepage": "https://gitlab.com/jsieberg123/sd-web#README",
   "dependencies": {
-    "ejs": "^2.5.2",
-    "express-stormpath": "^3.1.6",
+    "body-parser": "^1.15.2",
+    "bufferutil": "^1.3.0",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "express-stormpath": "^3.1.7",
+    "utf-8-validate": "^2.0.0",
+    "utils": "git+ssh://git@gitlab.com/jsieberg123/utils",
     "ws": "^1.1.1"
   }
 }

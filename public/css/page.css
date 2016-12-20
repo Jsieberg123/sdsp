@@ -1,21 +1,15 @@
-.vertical-third-center{
-  margin-top: 20%;
-  height:30%;
+.margin-top {
+    margin-top: 15%;
 }
 
-body{
-  position: fixed;
-  height: 100%;
-  width:100%;
+.big {
+    font-size: 10em;
 }
 
-.logout{
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border: none;
+.min-hieght {
+    min-height: 200px
 }
 
-.spacing{
-  margin-bottom: 15px;
+.pointer {
+    cursor: pointer
 }
