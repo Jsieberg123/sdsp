@@ -23,10 +23,11 @@ function connect(i) {
     $("#" + id + "-spinner").show();
     $("#" + id + "-retry").hide();
 
-    var timer = setTimeout(function(id) {
+    var timer = setTimeout(function(id, i) {
         $("#" + id + "-spinner").hide();
         $("#" + id + "-retry").show();
-    }.bind(null, id), 5000);
+        setTimeout(function() { connect(i); }, 15000);
+    }.bind(null, id, i), 5000);
     var displayInfo = new WebSocket(url + "?topic=display-" + id);
     displayInfo.i = i;
 
