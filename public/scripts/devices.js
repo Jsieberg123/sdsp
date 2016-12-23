@@ -13,8 +13,6 @@ for (var i = 0; i < devices.length; i++) {
         if ("template" in devices[this.i]) {
             var html = devices[this.i].template(data);
             $("#" + devices[this.i].id).html(html);
-        } else {
-            connect(this.i);
         }
     };
 }
