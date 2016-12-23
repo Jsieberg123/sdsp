@@ -29,8 +29,6 @@ function connect(i, silent) {
             return;
         }
 
-        event.data.i = this.i;
-        event.data.id = devices[i].id;
         devices[this.i].template = ejs.compile(event.data, {});
         this.close();
     }
@@ -40,6 +38,8 @@ function connect(i, silent) {
 
     displayData.onmessage = function(event) {
         var data = JSON.parse(event.data);
+        data.i = displayData.i;
+        data.id = devices[this.i].id
         if ("template" in devices[this.i]) {
             var html = devices[this.i].template(data);
             $("#" + devices[this.i].id).html(html);
