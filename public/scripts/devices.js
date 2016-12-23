@@ -52,3 +52,12 @@ function connect(i, silent) {
 
     devices[i].ws = displayData;
 }
+
+function send(i, cmd, payload) {
+    var message = JSON.stringify({
+        cmd: cmd,
+        payload: payload
+    });
+
+    devices[i].ws.send(message);
+}
