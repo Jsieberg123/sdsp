@@ -24,10 +24,6 @@ function connect(i, silent) {
         this.send("Get");
     }
 
-    displayInfo.onclose = function() {
-        this.connect(i, true);
-    }
-
     displayInfo.onmessage = function(event) {
         if (event.data === "Get") {
             return;
@@ -51,7 +47,7 @@ function connect(i, silent) {
     };
 
     displayData.onclose = function() {
-        this.connect(i, true);
+        connect(this.i, true);
     }
 
     devices[i].send = displayData.send;
