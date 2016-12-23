@@ -50,5 +50,5 @@ function connect(i, silent) {
         connect(this.i, true);
     }
 
-    devices[i].send = displayData.send;
+    devices[i].ws = displayData;
 }
