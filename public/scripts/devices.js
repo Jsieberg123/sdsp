@@ -32,6 +32,9 @@ function connect(i, silent) {
         if (event.data === "Get") {
             return;
         }
+
+        event.data.i = this.i;
+        event.data.id = devices[i].id;
         devices[this.i].template = ejs.compile(event.data, {});
         this.close();
     }
@@ -50,4 +53,6 @@ function connect(i, silent) {
     displayData.onclose = function() {
         this.connect(i, true);
     }
+
+    devices[i].send = displayData.send;
 }
