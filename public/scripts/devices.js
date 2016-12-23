@@ -1,20 +1,7 @@
 var url = "wss://aggautomation.com/sockets"
 
 for (var i = 0; i < devices.length; i++) {
-    var id = devices[i].id;
-
     connect(i, false);
-
-    var displayData = new WebSocket(url + "?topic=data-" + id);
-    displayData.i = i;
-
-    displayData.onmessage = function(event) {
-        var data = JSON.parse(event.data);
-        if ("template" in devices[this.i]) {
-            var html = devices[this.i].template(data);
-            $("#" + devices[this.i].id).html(html);
-        }
-    };
 }
 
 function connect(i, silent) {
@@ -37,11 +24,30 @@ function connect(i, silent) {
         this.send("Get");
     }
 
+    displayInfo.onclose = function() {
+        this.connect(i, true);
+    }
+
     displayInfo.onmessage = function(event) {
         if (event.data === "Get") {
             return;
         }
         devices[this.i].template = ejs.compile(event.data, {});
         this.close();
+    }
+
+    var displayData = new WebSocket(url + "?topic=data-" + id);
+    displayData.i = i;
+
+    displayData.onmessage = function(event) {
+        var data = JSON.parse(event.data);
+        if ("template" in devices[this.i]) {
+            var html = devices[this.i].template(data);
+            $("#" + devices[this.i].id).html(html);
+        }
+    };
+
+    displayData.onclose = function() {
+        this.connect(i, true);
     }
 }
