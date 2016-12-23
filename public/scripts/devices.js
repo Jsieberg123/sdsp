@@ -38,6 +38,9 @@ function connect(i, silent) {
 
     displayData.onmessage = function(event) {
         var data = JSON.parse(event.data);
+        if ("cmd" in data) {
+            return;
+        }
         data.i = displayData.i;
         data.id = devices[this.i].id
         if ("template" in devices[this.i]) {
