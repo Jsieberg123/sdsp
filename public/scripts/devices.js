@@ -3,7 +3,7 @@ var url = "wss://aggautomation.com/sockets"
 for (var i = 0; i < devices.length; i++) {
     var id = devices[i].id;
 
-    connect(i);
+    connect(i, false);
 
     var displayData = new WebSocket(url + "?topic=data-" + id);
     displayData.i = i;
@@ -17,16 +17,18 @@ for (var i = 0; i < devices.length; i++) {
     };
 }
 
-function connect(i) {
+function connect(i, silent) {
     var id = devices[i].id;
 
-    $("#" + id + "-spinner").show();
-    $("#" + id + "-retry").hide();
+    if (!silent) {
+        $("#" + id + "-spinner").show();
+        $("#" + id + "-retry").hide();
+    }
 
     var timer = setTimeout(function(id, i) {
         $("#" + id + "-spinner").hide();
         $("#" + id + "-retry").show();
-        setTimeout(function() { connect(i); }, 15000);
+        setTimeout(function() { connect(i, true); }, 15000);
     }.bind(null, id, i), 5000);
     var displayInfo = new WebSocket(url + "?topic=display-" + id);
     displayInfo.i = i;
