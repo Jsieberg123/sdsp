@@ -2,6 +2,18 @@ var url = "wss://aggautomation.com/sockets/"
 var events = {};
 
 for (var i = 0; i < devices.length; i++) {
+    var id = devices[i].id;
+
+    events[id] = {};
+
+    events[id]["display"] = function(display) {
+        clearInterval(events[id].interval);
+        console.log(id);
+        $("#" + id).html(display);
+    }
+
+    events[id].interval = setInterval(function() { getDisplay(id); });
+
     connect(i, false);
 }
 
@@ -9,17 +21,9 @@ function connect(i, silent) {
     var id = devices[i].id;
 
     if (!silent) {
-        events[id] = {};
         $("#" + id + "-spinner").show();
         $("#" + id + "-retry").hide();
     }
-
-    devices[i].timer = setTimeout(function(id, i) {
-        $("#" + id + "-spinner").hide();
-        $("#" + id + "-retry").show();
-        clearTimeout(devices[i].timer);
-        devices[i].timer = setTimeout(function() { connect(i, true); }, 15000);
-    }.bind(null, id, i), 5000);
 
     var socket = new WebSocket(url + "?topic=" + id);
     socket.id = id;
@@ -27,22 +31,17 @@ function connect(i, silent) {
 
     socket.onopen = function() {
         console.log("open");
-        send(this.id, "get", "");
+        getDisplay(id);
     }
 
     socket.onmessage = function(event) {
-        console.log(event);
         var message = JSON.parse(event.data);
 
         if (!("e" in message) || !("p" in message)) {
             return;
         }
 
-        clearTimeout(devices[this.i].timer);
-        console.log(message.e);
-
         if (message.e in events[this.id]) {
-            console.log("here");
             events[this.id][message.e](message.p);
         }
     }
@@ -53,12 +52,11 @@ function connect(i, silent) {
         devices[this.i].timer = setTimeout(function() { connect(i, true); }, 15000);
     }
 
-    events[id]["display"] = function(display) {
-        console.log(id);
-        $("#" + id).html(display);
-    }
-
     events[id].socket = socket;
+}
+
+function getDisplay(id) {
+    send(this.id, "get", "");
 }
 
 function send(device, event, payload) {
