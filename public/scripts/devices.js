@@ -11,7 +11,12 @@ for (var i = 0; i < devices.length; i++) {
         $("#" + id).html(display);
     }
 
-    //events[id].interval = setInterval(function() { getDisplay(id); }, 15000);
+    setTimeout(function(id) {
+        $("#" + id + "-spinner").hide();
+        $("#" + id + "-retry").show();
+    }.bind(null, id), 5000);
+
+    events[id].interval = setInterval(function(id) { getDisplay(id); }.bind(null, id), 15000);
 
     connect(i, false);
 }
@@ -30,12 +35,10 @@ function connect(i, silent) {
 
     socket.onopen = function() {
         console.log("open");
-        console.log(this);
         getDisplay(this.id);
     }
 
     socket.onmessage = function(event) {
-        console.log(event);
         var message = JSON.parse(event.data);
 
         if (!("e" in message) || !("p" in message)) {
@@ -50,7 +53,7 @@ function connect(i, silent) {
     socket.onclose = function() {
         console.log("Lossed connection with " + this.id);
         clearTimeout(devices[this.i].timer);
-        devices[this.i].timer = setTimeout(function() { connect(i, true); }, 15000);
+        devices[this.i].timer = setTimeout(connect.bind(null, i, true), 15000);
     }
 
     events[id].socket = socket;
