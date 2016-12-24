@@ -8,11 +8,10 @@ for (var i = 0; i < devices.length; i++) {
 
     events[id]["display"] = function(display) {
         clearInterval(events[id].interval);
-        console.log(id);
         $("#" + id).html(display);
     }
 
-    events[id].interval = setInterval(function() { getDisplay(id); });
+    events[id].interval = setInterval(function() { getDisplay(id); }, 15000);
 
     connect(i, false);
 }
