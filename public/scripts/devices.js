@@ -7,6 +7,7 @@ for (var i = 0; i < devices.length; i++) {
     events[id] = {};
 
     events[id]["display"] = function(display, id) {
+        delete events[id]["display"];
         clearInterval(events[id].interval);
         $("#" + id).html(display);
     }
