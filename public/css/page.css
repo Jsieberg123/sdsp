@@ -2,6 +2,10 @@
     margin-top: 15%;
 }
 
+.margin-bottom {
+    margin-bottom: 10px
+}
+
 .big {
     font-size: 10em;
 }
