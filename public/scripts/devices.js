@@ -1,4 +1,4 @@
-var url = "wss://aggautomation/sockets/"
+var url = "wss://aggautomation.com/sockets/"
 var events = {};
 
 for (var i = 0; i < devices.length; i++) {
