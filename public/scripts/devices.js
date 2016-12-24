@@ -11,7 +11,7 @@ for (var i = 0; i < devices.length; i++) {
         $("#" + id).html(display);
     }
 
-    events[id].interval = setInterval(function() { getDisplay(id); }, 15000);
+    //events[id].interval = setInterval(function() { getDisplay(id); }, 15000);
 
     connect(i, false);
 }
@@ -30,10 +30,12 @@ function connect(i, silent) {
 
     socket.onopen = function() {
         console.log("open");
-        getDisplay(id);
+        console.log(this);
+        getDisplay(this.id);
     }
 
     socket.onmessage = function(event) {
+        console.log(event);
         var message = JSON.parse(event.data);
 
         if (!("e" in message) || !("p" in message)) {
@@ -55,7 +57,7 @@ function connect(i, silent) {
 }
 
 function getDisplay(id) {
-    send(this.id, "get", "");
+    send(id, "get", "");
 }
 
 function send(device, event, payload) {
