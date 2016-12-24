@@ -6,7 +6,7 @@ for (var i = 0; i < devices.length; i++) {
 
     events[id] = {};
 
-    events[id]["display"] = function(display) {
+    events[id]["display"] = function(display, id) {
         clearInterval(events[id].interval);
         $("#" + id).html(display);
     }
@@ -43,7 +43,7 @@ function connect(i, silent) {
         }
 
         if (message.e in events[this.id]) {
-            events[this.id][message.e](message.p);
+            events[this.id][message.e](message.p, this.id);
         }
     }
 
