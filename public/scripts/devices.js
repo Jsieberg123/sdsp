@@ -50,7 +50,7 @@ function connect(i, silent) {
     socket.onclose = function() {
         console.log("Lossed connection with " + this.id);
         clearTimeout(devices[this.i].timer);
-        devices[this.i].timer = setTimeout(function() { connect(i, true); }, 1000);
+        devices[this.i].timer = setTimeout(function() { connect(i, true); }, 15000);
     }
 
     events[id]["display"] = function(display) {
